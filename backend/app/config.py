@@ -1,5 +1,5 @@
-
-from pydantic_settings import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -7,6 +7,16 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     debug: bool = True
     database_url: str = "sqlite:///./ai_customer_recovery.db"
+
+    secret_key: str = Field(min_length=32)
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = Field(default=30, gt=0)
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 settings = Settings()

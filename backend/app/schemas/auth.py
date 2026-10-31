@@ -38,3 +38,30 @@ class RegisterResponse(BaseModel):
     user_id: int
     name: str
     email: str
+
+
+class LoginRequest(BaseModel):
+    email: str = Field(min_length=5, max_length=255)
+    password: str = Field(min_length=1, max_length=128)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        value = value.strip().lower()
+
+        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", value):
+            raise ValueError("Invalid email address")
+
+        return value
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class CurrentUserResponse(BaseModel):
+    user_id: int
+    company_id: int
+    name: str
+    email: str
+    role: str
