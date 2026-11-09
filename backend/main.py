@@ -4,6 +4,7 @@ from app.config import settings
 from app.routes.health import router as health_router
 from app.routes.auth.register import router as register_router
 from app.routes.leads.routes import router as leads_router
+from app.routes.conversations import router as conversations_router
 
 
 app = FastAPI(
@@ -14,6 +15,7 @@ app = FastAPI(
 app.include_router(health_router)
 app.include_router(register_router, prefix="/auth")
 app.include_router(leads_router)
+app.include_router(conversations_router)
 
 
 @app.get("/")
